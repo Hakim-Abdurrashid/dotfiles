@@ -1,0 +1,11 @@
+[Unit]
+Description=Background fetch all local Git repositories on network connection
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/gitfetch_all_repositories.sh
+
+[Install]
+WantedBy=default.target

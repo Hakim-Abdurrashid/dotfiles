@@ -31,3 +31,20 @@ else
     echo "Unrecognized input. Defaulting to SSH."
     git config --global alias.cl "!f() { git clone git@github.com:\$1; }; f"
 fi
+
+#automatically git fetch all repositories
+DOTFILES_DIR="$HOME/dotfiles"
+
+chmod +x "$DOTFILES_DIR/gitfetch_all_repositories.sh"
+
+#create the systemd user directory if it doesn't exist
+mkdir -p "$HOME/.config/systemd/user"
+
+#symlink the service file
+ln -sf "$DOTFILES_DIR/gitfetch_all_repositories.service" "$HOME/.config/systemd/user/gitfetch_all_repositories.service"
+
+#reload systemd and enable the service to run on network startup
+systemctl --user daemon-reload
+systemctl --user enable gitfetch_all_repositories.service
+
+echo "Configured!"
